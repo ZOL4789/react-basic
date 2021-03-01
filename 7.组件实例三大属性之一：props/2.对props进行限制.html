@@ -15,6 +15,8 @@
 <script type='text/javascript' src='../js/react-dom.development.js'></script>
 <!-- 引入babel， 将jsx转为js -->
 <script tyep='text/javascript' src='../js/babel.min.js'></script>
+<!-- 引入prop-types，限制组件属性 -->
+<script type='text/javascript' src='../js/prop-types.js'></script>
 
 <!-- type一定要写成text/babel -->
 <script type='text/babel'>
@@ -34,8 +36,24 @@
             );
         }
     }
-    // 2.渲染组件到页面
+
+    // 2.对属性进行限制
+    Person.propTypes = {
+        //name:React.PropTypes.string.isRequired,      // 16版本下写法
+        name:PropTypes.string.isRequired,               // 16版本上写法
+        sex: PropTypes.string,
+        age: PropTypes.number,
+        speak: PropTypes.func,
+    }
+    
+    Person.defaultProps = {
+        sex: 'Male',
+        age: 18
+    }
+
+    // 3.渲染组件到页面
     const p = {name:'ZOL',sex:'Male',age:'24'};
+   // console.log("@", {...p}); // 可行，打印出p对象
     ReactDOM.render(<Person {...p}/>, document.getElementById('container'));
 </script>
 </body>

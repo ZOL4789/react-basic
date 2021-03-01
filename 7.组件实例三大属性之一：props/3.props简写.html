@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>React template</title>
+</head>
+<body>
+<!-- 容器 -->
+<div id='container'></div>
+
+<!-- 引入React核心库 -->
+<script type='text/javascript' src='../js/react.development.js'></script>
+<!-- 引入React-dom，用于支持React操作DOM -->
+<script type='text/javascript' src='../js/react-dom.development.js'></script>
+<!-- 引入babel， 将jsx转为js -->
+<script tyep='text/javascript' src='../js/babel.min.js'></script>
+<!-- 引入prop-types，限制组件属性 -->
+<script type='text/javascript' src='../js/prop-types.js'></script>
+
+<!-- type一定要写成text/babel -->
+<script type='text/babel'>
+    // 1.创建类式组件
+    class Person extends React.Component{
+        
+        constructor(props){
+            super(props); 
+        }
+
+        // 对组件属性类别进行设置
+        static propTypes = {
+            //name:React.PropTypes.string.isRequired,      // 16版本下写法
+            name:PropTypes.string.isRequired,               // 16版本上写法
+            sex: PropTypes.string,
+            age: PropTypes.number,
+            speak: PropTypes.func,
+        }
+        
+        // 对组件属性默认值的设置
+        static defaultProps = {
+            sex: 'Male',
+            age: 18
+        }
+
+        render(){
+            const {name,sex,age} = this.props;
+            return (
+                <ul>
+                    <li>姓名：{name}</li>    
+                    <li>性别：{sex}</li>
+                    <li>性别：{age}</li>
+                </ul>
+            );
+        }
+    }
+
+    // 3.渲染组件到页面
+    const p = {name:'ZOL',sex:'Male',age:24};
+   // console.log("@", {...p}); // 可行，打印出p对象
+    ReactDOM.render(<Person {...p}/>, document.getElementById('container'));
+</script>
+</body>
+</html>
