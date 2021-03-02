@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>生命周期（旧）</title>
+</head>
+<body>
+<!-- 容器 -->
+<div id='container'></div>
+
+<!-- 引入React核心库 -->
+<script type='text/javascript' src='../js/react.development.js'></script>
+<!-- 引入React-dom，用于支持React操作DOM -->
+<script type='text/javascript' src='../js/react-dom.development.js'></script>
+<!-- 引入babel， 将jsx转为js -->
+<script tyep='text/javascript' src='../js/babel.min.js'></script>
+
+<!-- type一定要写成text/babel -->
+<script type='text/babel'>
+    // 1.创建组件
+    class Demo extends React.Component{
+        state = {sum:0}
+
+        constructor(props){
+            super(props);
+            console.log("Sum-constructor");
+        }
+
+        // 组件将要挂载
+        componentWillMount(){
+            console.log("Sum-componentWillMount");
+        }
+
+        // 组件完成挂载
+        componentDidMount(){
+            console.log("Sum-componentDidMount");
+        }
+
+        // 组件将要卸载
+        componentWillUnmount(){
+            console.log("Sum-componentWillUnmount");
+        }
+
+        add = ()=>{
+            const sum = this.state.sum;
+            this.setState({sum:sum+1});
+        }
+
+        forUpdate = ()=>{
+            // 强制更新组件
+            this.forceUpdate();
+        }
+
+        unmount = ()=>{
+            ReactDOM.unmountComponentAtNode(document.getElementById("container"));
+        }
+
+
+        componentWillReceiveProps(){
+            console.log("Sum-componentWillReceiveProps");
+        }
+
+        // 控制组件是否更新
+        shouldComponentUpdate(){
+            console.log("Sum-shouldComponentUpdate");
+            return true;
+        }
+
+        componentWillUpdate(){
+            console.log("Sum-componentWillUpdate");
+        }
+
+        componentDidUpdate(){
+            console.log("Sum-componentDidUpdate");
+        }
+
+        render(){
+            console.log("Sum-render");
+            const sum = this.state.sum;
+            return (
+                <div>
+                    <h2>当前求和为：{sum}</h2>
+                    <button onClick={this.add}>点我+1</button>
+                    <button onClick={this.unmount}>卸载组件</button>
+                    <button onClick={this.forUpdate}>强制更新</button>
+                </div>
+            )
+        }
+    }
+
+    // 父组件A
+    class A extends React.Component{
+
+        state = {carName:'宝马'};
+
+        changeCar = ()=>{
+            this.setState({carName:'奔驰'});
+        }
+
+        render(){
+            return (
+                <div>
+                    <h2>我是A组件</h2>
+                    <button onClick={this.changeCar}>换车</button>
+                    <B carName={this.state.carName}/>
+                </div>
+            )
+        }
+    }
+
+    // 子组件B
+    class B extends React.Component{
+
+        componentWillReceiveProps(props){
+            console.log("B-componentWillReceiveProps", props);
+        }
+
+        render(){
+            return (
+                <div>
+                    A中传来的是：{this.props.carName}
+                </div>
+            )
+        }
+    }
+
+    // 2.渲染组件到页面
+    // ReactDOM.render(<Demo />, document.getElementById('container'));
+    ReactDOM.render(<A />, document.getElementById('container'));
+</script>
+</body>
+</html>

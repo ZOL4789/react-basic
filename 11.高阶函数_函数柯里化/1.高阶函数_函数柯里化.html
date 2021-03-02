@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>高阶函数(实际没关系)</title>
+</head>
+<body>
+<!-- 容器 -->
+<div id='container'></div>
+
+<!-- 引入React核心库 -->
+<script type='text/javascript' src='../js/react.development.js'></script>
+<!-- 引入React-dom，用于支持React操作DOM -->
+<script type='text/javascript' src='../js/react-dom.development.js'></script>
+<!-- 引入babel， 将jsx转为js -->
+<script tyep='text/javascript' src='../js/babel.min.js'></script>
+
+<!-- type一定要写成text/babel -->
+<script type='text/babel'>
+    // 1.创建组件
+    class Login extends React.Component{
+
+        state = {
+            username:'',
+            password:''
+        }
+        
+        handleSubmit = (event)=>{
+            even.preventDefault();  // 阻止表单提交
+          //  const username = this.refs.username;
+            //const password = this.refs.password;
+            //alert("用户名：" + username.value+"，密码：" + password.value);
+            //const {username, password} = this.refs;
+            //alert(`用户名：${username.value}，密码：${password.value}`);        // 注意符号！！！
+            const {username, password} = this.state;
+            alert(username + "\n" + password);
+        }
+
+        saveUsername = (event)=>{
+            console.log(event.target.name);
+            const dataType = event.target.name;
+            const data = event.target.value;
+            // this.setState({dataType:data})           // 不能成功保存username：data，只能保存dataType：data
+            this.setState({[dataType]:data})         // 重要，obj[dataType] = data
+        }
+
+        savePassword = (event)=>{
+            this.setState({password:event.target.value})
+        }
+
+        render(){
+            return (
+                <div>
+                    <form  onSubmit={this.handleSubmit}>
+                        用户名：<input onChange={this.saveUsername} type='text' name='username'/>
+                        密码：<input onChange={this.savePassword} type='text' name='password'/><br/>
+                        <button>登录</button>
+                    </form>
+                </div>
+            );
+        }
+    }
+    // 2.渲染虚拟DOM到页面
+    ReactDOM.render(<Login/>, document.getElementById('container'));
+</script>
+</body>
+</html>
