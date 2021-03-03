@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>React component template</title>
+</head>
+<body>
+<!-- 容器 -->
+<div id='container'></div>
+
+<!-- 引入React核心库 -->
+<script type='text/javascript' src='../js/react.development.js'></script>
+<!-- 引入React-dom，用于支持React操作DOM -->
+<script type='text/javascript' src='../js/react-dom.development.js'></script>
+<!-- 引入babel， 将jsx转为js -->
+<script tyep='text/javascript' src='../js/babel.min.js'></script>
+
+<!-- type一定要写成text/babel -->
+<script type='text/babel'>
+    // 1.创建组件
+    class Demo extends React.Component{
+
+        state = {persons:[
+            {id:1,name:'香蕉',age:18},
+            {id:2,name:"苹果",age:19}
+        ]}
+
+        add = ()=>{
+            const {persons} = this.state;
+            const p = {id:persons.length+1, name:"水果", age:20};
+            this.setState({persons:[p,...persons]});
+        }
+
+        render(){
+            return (
+                <div>
+                    <h2>展示人员信息</h2>
+                    <button onClick={this.add}>添加一个人员</button>
+                    <ul>
+                        {
+                            this.state.persons.map((personObj, index)=>{
+                                // 以index作为key效率不高, 往输入框中输入文本，然后点击添加一个人员即可看到效果
+                                return <li key={index}>{personObj.name}-----{personObj.age}<input type='text'/></li>;
+                            })
+                        }
+                    </ul>
+                    <ul>
+                        {
+                            this.state.persons.map((personObj)=>{
+                                // 以id作为key效率高，往输入框中输入文本，然后点击添加一个人员即可看到效果
+                                return <li key={personObj.id}>{personObj.name}-----{personObj.age}<input type='text'/></li>;
+                            })
+                        }
+                    </ul>
+                </div>
+            );
+        }
+    };
+    // 2.渲染组件到页面
+    ReactDOM.render(<Demo/>, document.getElementById('container'));
+</script>
+</body>
+</html>
